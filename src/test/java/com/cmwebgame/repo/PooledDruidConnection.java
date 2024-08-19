@@ -68,7 +68,7 @@ public class PooledDruidConnection
 		this.ds = new DruidDataSource();
 		
 		this.ds.setName("beauty-core_connection");
-		this.ds.setDriverClassName("com.mysql.jdbc.Driver");
+		this.ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 //		this.ds.setUrl("jdbc:mysql://192.168.1.202:3306/wlsg?"
 //				+ "user=wilson&password=wilsonlee&autoReconnect=true"
 				this.ds.setUrl("jdbc:mysql://localhost:3306/mycms?"
@@ -80,7 +80,7 @@ public class PooledDruidConnection
 		this.ds.setInitialSize(1);
 		this.ds.setMaxWait(25000);
 		this.ds.setUseUnfairLock(true);//使用非公平锁
-		this.ds.setValidationQuery("select * test_table limit 1");
+//		this.ds.setValidationQuery("select * test_table limit 1");
 		this.ds.setTestWhileIdle(true);
 		this.ds.setTimeBetweenEvictionRunsMillis(60*1000L);
 		

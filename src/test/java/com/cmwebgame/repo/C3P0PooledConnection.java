@@ -58,15 +58,11 @@ public class C3P0PooledConnection
 {
 	private ComboPooledDataSource ds;
 	
-	/**
-	 * 
-	 * @see com.cmwebgame.DBConnection#init()
-	 */
 	public void init() throws Exception
 	{
 		this.ds = new ComboPooledDataSource();
 		
-		this.ds.setDriverClass("com.mysql.jdbc.Driver");
+		this.ds.setDriverClass("com.mysql.cj.jdbc.Driver");
 		this.ds.setJdbcUrl("jdbc:mysql://192.168.1.202:3306/wlsg?"
 				+ "user=wilson&password=wilsonlee&autoReconnect=true"
 				+ "&useNewIO=false&zeroDateTimeBehavior=convertToNull&useServerPrepStmts=false"
@@ -131,9 +127,6 @@ public class C3P0PooledConnection
 		}
 	}
 	
-	/**
-	 * @see com.cmwebgame.DBConnection#getConnection()
-	 */
 	public Connection getConnection()
 	{
 		try {
@@ -144,9 +137,6 @@ public class C3P0PooledConnection
 		}
 	}
 
-	/**
-	 * @see com.cmwebgame.DBConnection#releaseConnection(java.sql.Connection)
-	 */
 	public void releaseConnection(Connection conn)
 	{
         if (conn==null) {
@@ -161,9 +151,6 @@ public class C3P0PooledConnection
 		}
 	}
 
-	/**
-	 * @see com.cmwebgame.DBConnection#realReleaseAllConnections()
-	 */
 	public void realReleaseAllConnections() throws Exception
 	{
 		DataSources.destroy(this.ds);

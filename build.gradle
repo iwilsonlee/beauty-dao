@@ -5,17 +5,35 @@
  * For more details take a look at the Java Libraries chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.0.1/userguide/java_library_plugin.html
  */
-
+import io.github.cdimascio.dotenv.Dotenv
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
 }
 
-version = '0.1.0'
+version = '0.2.0'
+group = 'com.github.iwilsonlee'
+def artifactId = project.name
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def dotenv = Dotenv.load() // 读取 .env 文件
+task loadEnv {
+    doFirst {
+        dotenv.entries().each { entry ->
+            project.ext[entry.key] = entry.value
+        }
+    }
+}
+tasks.withType(JavaCompile) {
+    dependsOn loadEnv
+}
 
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
+    maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     jcenter()
     mavenCentral()
     mavenLocal()
@@ -39,4 +57,29 @@ dependencies {
         "c3p0:c3p0:0.9.1.2",
         "mysql:mysql-connector-java:5.1.31"
     )
+}
+
+// 构建过程不执行单元测试
+tasks.withType(Test) {
+    enabled = false
+}
+
+def aliMavenUsername = dotenv.get("ALI_MAVEN_USERNAME")
+def aliMavenPassword = dotenv.get("ALI_MAVEN_PASSWORD")
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenLocal()
+        mavenDeployer {
+            repository(url: 'https://packages.aliyun.com/5ef8675887f8da7d5e937585/maven/repo-yyxnv') {
+                authentication(
+                        userName: "$aliMavenUsername",
+                        password: "$aliMavenPassword"
+                )
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }
+    }
 }

@@ -8,3 +8,12 @@
  */
 
 rootProject.name = 'beauty-dao'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.github.cdimascio:dotenv-java:2.2.0'
+    }
+}

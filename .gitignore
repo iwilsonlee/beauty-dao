@@ -8,3 +8,5 @@ build
 firestorm.log
 bin
 .classpath
+.idea
+.env
