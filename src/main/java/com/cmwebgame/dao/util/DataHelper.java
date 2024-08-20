@@ -116,8 +116,14 @@ public class DataHelper {
 		        	   if(value==null){
 		        		   cache[0] = null; 
 		        	   }else {
-		        		   DateTime dTime =  DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S").parseDateTime(value);
-			        	   cache[0] = new Timestamp(dTime.getMillis());
+						   // 如果value符合“yyyy-MM-dd HH:mm:ss”格式，则转换成Timestamp类型
+						   if(value.length()>11 && value.length() < 20){
+							   DateTime dTime =  DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(value);
+				        	   cache[0] = new Timestamp(dTime.getMillis());
+						   }else if(value.length() > 19){
+							   DateTime dTime =  DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S").parseDateTime(value);
+				        	   cache[0] = new Timestamp(dTime.getMillis());
+						   }
 					   }
 		        	   
 				   }
